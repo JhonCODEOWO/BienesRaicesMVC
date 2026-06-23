@@ -1,0 +1,19 @@
+<?php
+
+require 'funciones.php';
+require 'config/database.php';
+require 'config/errorMessages.php';
+require __DIR__ . '/../vendor/autoload.php';
+
+use App\ActiveRecord;
+use Dotenv\Dotenv;
+
+//Load and config environment variables.
+$dotenv = Dotenv::createImmutable(__DIR__.'/../');
+$dotenv->load();
+$dotenv->required('DB_PASSWORD');
+$dotenv->required(['DB_HOST', 'DB_DATABASE', 'DB_USERNAME'])->notEmpty();
+$dotenv->required('PRODUCTION')->isBoolean();
+
+//Set DB connection globally in the parent class.
+ActiveRecord::setDB(conectarDb());

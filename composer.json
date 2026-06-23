@@ -1,0 +1,20 @@
+{
+    "name": "user/bienes-raices-poo",
+    "description": "Proyecto con POO",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Jonathan Juárez Valera",
+            "email": "jjv20618@gmail.com"
+        }
+    ],
+    "require": {
+        "intervention/image": "^3.11",
+        "vlucas/phpdotenv": "^5.6"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "./classes"
+        }
+    }
+}

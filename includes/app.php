@@ -5,8 +5,8 @@ require 'config/database.php';
 require 'config/errorMessages.php';
 require __DIR__ . '/../vendor/autoload.php';
 
-use App\ActiveRecord;
 use Dotenv\Dotenv;
+use Models\ActiveRecord;
 
 //Load and config environment variables.
 $dotenv = Dotenv::createImmutable(__DIR__.'/../');

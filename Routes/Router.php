@@ -64,7 +64,7 @@ class Router {
      */
     private function execHandler(callable | array $handler){
         //Check if its a callback and execute it
-        if(is_callable($handler)) return call_user_func($handler, $this);
+        if(is_callable($handler)) return call_user_func($handler);
 
         //Check if its an array
         if(is_array($handler)){

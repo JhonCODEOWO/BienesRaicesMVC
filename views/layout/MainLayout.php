@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="build/main.css">
+    <link rel="stylesheet" href="/build/main.css">
 </head>
 <body class="bg-neutral-900 text-white">
     <header class="flex justify-between p-3 w-full bg-black text-white">
@@ -41,6 +41,6 @@
             <p class="copyright">Todos los Derechos Reservados <?php echo date('Y'); ?> &copy; </p>
         </div>
     </footer>
-    <script src="build/main.js"></script>
+    <script src="/build/main.js"></script>
 </body>
 </html>

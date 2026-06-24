@@ -4,7 +4,7 @@ namespace Controllers;
 
 class PropiedadController {
     function index() {
-        echo "index";
+        view('propiedades/admin', ['title' => 'Prueba'], 'layout/MainLayout');
     }
 
     function create(){

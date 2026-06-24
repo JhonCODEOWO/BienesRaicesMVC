@@ -29,6 +29,17 @@ class Router {
         $this->addRoute('GET', $path, $handler);
     }
 
+    /**
+     *  store a new POST request
+     *
+     * @param  string $path The path to store
+     * @param  callable | array $handler The callback to execute or an array with class controller name and handler function.
+     * @return void
+     */
+    public function post(string $path, callable|array $handler){
+        $this->addRoute('POST', $path, $handler);
+    }
+
     // Main structural handler to store paths
     private function addRoute(string $method, string $path, callable|array $handler): void {
         // Normalize the route pattern and parse named variables if needed

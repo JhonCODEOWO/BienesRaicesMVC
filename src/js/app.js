@@ -14,10 +14,12 @@ function eventListeners() {
 function navegacionResponsive() {
     
     const navegacion = document.querySelector('.navegacion');
+    const displayState = navegacion.style.display;
+    console.log(displayState);
 
-    if(navegacion.classList.contains('mostrar')) {
-        navegacion.classList.remove('mostrar');
+    if(displayState === 'block') {
+        navegacion.style.display = 'none';
     } else {
-        navegacion.classList.add('mostrar');
+        navegacion.style.display = 'block';
     }
 }

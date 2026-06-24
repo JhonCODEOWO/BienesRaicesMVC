@@ -5,8 +5,8 @@
         <p class="alerta exito"><?php echo getErrorMessage(intval($mensaje)) ?></p>
     <?php endif ?>
 
-    <a href="/admin/propiedades/crear.php" class="btn btn-success">Nueva Propiedad</a>
-    <a href="/admin/vendedores/Crear.php" class="btn btn-error">Nuevo vendedor</a>
+    <a href="/propiedades/create" class="btn btn-success">Nueva Propiedad</a>
+    <a href="/vendedores/create" class="btn btn-error">Nuevo vendedor</a>
 
     <h2>Propiedades</h2>
     <table>

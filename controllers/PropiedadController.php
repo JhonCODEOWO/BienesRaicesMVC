@@ -15,7 +15,15 @@ class PropiedadController {
     }
 
     function create(){
-        echo "crear propiedad";
+        $errores = Propiedad::getErrors();
+        $propiedad = new Propiedad();
+        $vendedores = Vendedores::all();
+
+        view('propiedades/CreateView', [
+            'errores' => $errores,
+            'propiedad' => $propiedad,
+            'vendedores' => $vendedores,
+        ], 'layout/MainLayout');
     }
 
     function edit(){

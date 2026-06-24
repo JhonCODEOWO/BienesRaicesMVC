@@ -3,6 +3,7 @@
 define('FUNCIONES_URL', __DIR__ . "/funciones/funciones.php");
 define('TEMPLATES_URL', __DIR__ . "/templates");
 define('CARPETA_IMAGENES', __DIR__."/../imagenes/");
+define('VIEWS_PATH', __DIR__."/../views/");
 
 function incluirTemplate(string $nombre, bool $inicio = false)
 {
@@ -71,4 +72,33 @@ function redirectTo(string $direction, array $queryParams = []): void
 function getErrorMessage(int $code): string{
     if(!filter_var($code, FILTER_VALIDATE_INT)) return 'The code provided is not an int value.';
     return ERROR_MESSAGES[$code];
+}
+
+
+/**
+ *  render a view file from the view folder
+ *
+ * @param  string $viewPath The entire file path of a view file
+ * @param  array $data A key/value array with every variable used inside the view requested.
+ * @return string | false
+ */
+function view(string $viewPath, array $data, ?string $layoutPath = null){
+    $viewPath = VIEWS_PATH."$viewPath.php";
+    
+    if(!file_exists($viewPath) ) throw new Exception("The view $viewPath doesn't exists in the view folder.");
+
+    extract($data);
+
+    //Prepare child HTML and store it in string value.
+    ob_start();
+    require $viewPath;
+    $content = ob_get_clean();
+
+    if($layoutPath) {
+        //TODO: Check if the layout file exists
+        ob_start();
+        require VIEWS_PATH . "$layoutPath.php";
+        $content = ob_get_clean();
+    }
+    echo $content;
 }

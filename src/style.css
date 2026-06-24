@@ -11,6 +11,10 @@
     @apply bg-red-900
 }
 
+.btn.btn-info{
+    @apply bg-blue-900
+}
+
 table {
     @apply w-full text-center rounded text-white overflow-hidden
 }
@@ -28,4 +32,16 @@ h1 {
 }
 h2 {
     @apply text-3xl font-bold
+}
+
+fieldset{
+    @apply rounded-xl border border-gray-200  p-6 shadow-sm flex flex-col
+}
+
+legend {
+    @apply text-lg font-light
+}
+
+input, select, textarea {
+    @apply rounded p-1.5 bg-neutral-600
 }

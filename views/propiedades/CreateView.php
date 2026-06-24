@@ -15,7 +15,7 @@
         </div>
     <?php endforeach; ?>
 
-    <form class="formulario" method="POST" enctype="multipart/form-data">
+    <form class="formulario" method="POST" enctype="multipart/form-data" action="/propiedades/create">
         
         <?php include __DIR__.'/propiedadesForm.php'; ?>
 

@@ -6,9 +6,9 @@
     <title>Document</title>
     <link rel="stylesheet" href="build/main.css">
 </head>
-<body>
+<body class="bg-neutral-900 text-white">
     <header class="flex justify-between p-3 w-full bg-black text-white">
-        <h2 class="uppercase"><span class="font-bold">Bienes</span>Raices</h2>
+        <h2 class="uppercase"><span class="font-extralight">Bienes</span>Raices</h2>
         <div>
             <div class="barra">
                 <div class="block md:hidden mobile-menu">
@@ -26,7 +26,7 @@
         </div>
     </header>
     
-    <div class="min-h-dvh">
+    <div class="min-h-dvh mx-2 my-1">
         <?php echo $content; ?>
     </div>
 

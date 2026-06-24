@@ -2,9 +2,16 @@
 
 namespace Controllers;
 
+use Models\Propiedad;
+use Models\Vendedores;
+
 class PropiedadController {
     function index() {
-        view('propiedades/admin', ['title' => 'Prueba'], 'layout/MainLayout');
+        $propiedades = Propiedad::all();
+        $vendedores = Vendedores::all();
+
+        view('propiedades/admin',
+        ['propiedades' => $propiedades, 'vendedores' => $vendedores, 'mensaje' => null], 'layout/MainLayout');
     }
 
     function create(){

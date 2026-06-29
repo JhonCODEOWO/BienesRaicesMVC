@@ -13,7 +13,7 @@
             <div class="barra">
                 <div class="block md:hidden mobile-menu">
                     <a href="#navegacion">
-                        <img src="assets/barras.svg" alt="Icono Menu" height="25" width="25">
+                        <img src="/assets/barras.svg" alt="Icono Menu" height="25" width="25">
                     </a>
                 </div>
 

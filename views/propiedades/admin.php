@@ -36,7 +36,7 @@
                     <input type="submit" class="boton boton-rojo" value="Borrar">
                 </form>
                     
-                    <a href="/propiedades/edit?id=<?php echo $propiedad->idPropiedades; ?>" class="boton boton-verde">Actualizar</a>
+                    <a href="/propiedades/edit/<?php echo $propiedad->idPropiedades; ?>" class="boton boton-verde">Actualizar</a>
                 </td>
             </tr>
 

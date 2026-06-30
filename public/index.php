@@ -10,7 +10,7 @@ $router = new Router();
 $router->get('/admin', [PropiedadController::class, 'index']);
 $router->get('/propiedades/create', [PropiedadController::class, 'create']);
 $router->post('/propiedades/create', [PropiedadController::class, 'save']);
-$router->get('/propiedades/edit', [PropiedadController::class, 'edit']);
+$router->get('/propiedades/edit/{id}', [PropiedadController::class, 'edit']);
 
 //Handling the incoming request.
 $router->checkRoutes();

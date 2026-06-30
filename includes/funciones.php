@@ -106,3 +106,12 @@ function view(string $viewPath, array $data, ?string $layoutPath = null){
 function query(string $key): string | null{
     return $_GET[$key] ??  null;
 }
+
+function contentInsideBrackets(string $string): string{
+    $len = strlen($string);
+    $result = '';
+    for ($i=1; $i < $len - 1 ; $i++) { 
+        $result .= $string[$i];
+    }
+    return $result;
+}

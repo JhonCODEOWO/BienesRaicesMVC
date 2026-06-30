@@ -54,7 +54,7 @@ class Router {
      * @return void
      */
     private function resolve(string $method, string $path){
-        $handler = $this->routes[$method][$path] ?? null;
+        $handler = $this->routes[$method][parse_url($path, PHP_URL_PATH)] ?? null;
 
         if(!isset($handler)){
             http_response_code(404);

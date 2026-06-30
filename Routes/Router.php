@@ -1,6 +1,7 @@
 <?php
 
 namespace Routes;
+use Routes\Request;
 
 class Router {
     /** Stored routes by key METHOD with children PATH and CALLABLE | ARRAY values */
@@ -54,16 +55,64 @@ class Router {
      * @return void
      */
     private function resolve(string $method, string $path){
-        $handler = $this->routes[$method][parse_url($path, PHP_URL_PATH)] ?? null;
+        $incomingReqSegments = explode('/', parse_url($path, PHP_URL_PATH));
+        $methodRegisteredRoutes = $this->routes[$method]; //Get all routes by method
+        $routeMatch = null;
 
-        if(!isset($handler)){
+        //Check if almost one of them matches with incoming path
+        foreach ($methodRegisteredRoutes as $registeredRoute => $value) {
+            $regSegments = explode('/', $registeredRoute);
+
+            //If the incoming request path doesn't match with registered path segments skip it
+            if(count($incomingReqSegments) != count($regSegments)) continue;
+
+            $isMatch = true;
+
+            //Check if the incoming path match
+            foreach ($regSegments as $index => $urlSegment) {
+                $totalChars = strlen($urlSegment);
+                if($totalChars === 0) continue;
+                
+                $isParam = ($urlSegment[0] === '{' && $urlSegment[$totalChars - 1] === '}' && $totalChars > 0);
+                if($isParam) continue;
+
+                if($urlSegment != $incomingReqSegments[$index]) {
+                    $isMatch = false;
+                    break;
+                };
+            }
+
+            if($isMatch) {
+                $routeMatch = $registeredRoute;
+                break;
+            }
+        }
+
+        if(!isset($routeMatch)){
             http_response_code(404);
-            echo "404 - Page Not Found";
+            echo "404 - The requested route doesn't exists";
             exit;
         }
 
+        //Work with url params now...
+        $urlParams = [];
+        $handler = $this->routes[$method][$routeMatch];
+        foreach (explode('/', $routeMatch) as $index => $value) {
+            if(strlen($value) === 0) continue;
+            if($value[0] === '{' && $value[strlen($value) - 1] === '}') {
+                $urlParams[contentInsideBrackets($value)] = $incomingReqSegments[$index];
+            };
+            continue;
+        }
+
         if(isset($handler)){
-            $this->execHandler($handler);
+            $req = new Request([
+                "urlParams" => $urlParams,
+                "queryParams" => $_GET,
+                "method" => $method,
+                "body" => $_POST,
+            ]);
+            $this->execHandler($handler, $req);
         }
     }
     
@@ -73,9 +122,9 @@ class Router {
      * @param  callable | array $handler An array with (classname, fnName) or a callback.
      * @return void
      */
-    private function execHandler(callable | array $handler){
+    private function execHandler(callable | array $handler, Request $req){
         //Check if its a callback and execute it
-        if(is_callable($handler)) return call_user_func($handler);
+        if(is_callable($handler)) return call_user_func($handler, $req);
 
         //Check if its an array
         if(is_array($handler)){
@@ -83,7 +132,7 @@ class Router {
             if(class_exists($class)){
                 $controller = new $class();
                 if(method_exists($controller, $fn)){
-                    return call_user_func([$controller, $fn]);
+                    return call_user_func([$controller, $fn], $req);
                 }
             }
         }

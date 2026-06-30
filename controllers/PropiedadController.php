@@ -6,6 +6,7 @@ use Intervention\Image\Drivers\Gd\Driver;
 use Intervention\Image\ImageManager;
 use Models\Propiedad;
 use Models\Vendedores;
+use Routes\Request;
 
 class PropiedadController {
     function index() {
@@ -29,8 +30,8 @@ class PropiedadController {
         ], 'layout/MainLayout');
     }
 
-    function save() {
-        $propiedad = new Propiedad($_POST);
+    function save(Request $req) {
+        $propiedad = new Propiedad($req->body());
         $uploadedFile = $_FILES['imagen']['tmp_name'];
         $imageName = '';
         $transformedImage = null;
@@ -67,20 +68,17 @@ class PropiedadController {
         redirectTo('/admin');
     }
 
-    function edit(){
+    function edit(Request $req){
         $errores = Propiedad::getErrors();
-        $id = filter_var(query('id'), FILTER_VALIDATE_INT);
-        if(!$id)
-            redirectTo('/admin');
+        $propiedad = Propiedad::find($req->getUrlParamValue('id'));
 
-        $propiedad = Propiedad::find($id);
         view('propiedades/UpdateView', [
             "propiedad" => $propiedad,
             "errores" => $errores,
         ], 'layout/MainLayout');
     }
 
-    function update() {
-        
+    function update(Request $req) {
+        debug($req);
     }
 }

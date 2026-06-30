@@ -9,6 +9,7 @@ use Models\Vendedores;
 
 class PropiedadController {
     function index() {
+        $message = query('mensaje');
         $propiedades = Propiedad::all();
         $vendedores = Vendedores::all();
 
@@ -67,6 +68,19 @@ class PropiedadController {
     }
 
     function edit(){
-        echo "crear editar";
+        $errores = Propiedad::getErrors();
+        $id = filter_var(query('id'), FILTER_VALIDATE_INT);
+        if(!$id)
+            redirectTo('/admin');
+
+        $propiedad = Propiedad::find($id);
+        view('propiedades/UpdateView', [
+            "propiedad" => $propiedad,
+            "errores" => $errores,
+        ], 'layout/MainLayout');
+    }
+
+    function update() {
+        
     }
 }

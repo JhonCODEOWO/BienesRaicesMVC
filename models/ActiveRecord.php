@@ -2,6 +2,7 @@
 
 namespace Models;
 use mysqli;
+use ReflectionProperty;
 
 class ActiveRecord {
     /**
@@ -41,11 +42,42 @@ class ActiveRecord {
     public function rehydrate(array $data){
         foreach ($data as $key => $value) {
             if(!property_exists($this, $key) || is_null($value)) continue;
-            $this->$key = $value;
+
+            $castedValue = $this->castProperty($key, $value);
+
+            if($castedValue === false || $castedValue === null) continue;
+
+            $this->$key = $castedValue;
         }
     }
 
-        
+    protected function castProperty(string $key, mixed $value) : mixed {
+        $property = new ReflectionProperty($this, $key);
+            $type = $property->getType()?->getName();
+            $filtered = false;
+
+            switch ($type) {
+                case 'string':
+                    $filtered = (string) $value;
+                    break;
+                case 'int':
+                    $filtered = filter_var($value, FILTER_VALIDATE_INT);
+                    break;
+                case 'float':
+                    $filtered = filter_var($value, FILTER_VALIDATE_FLOAT);
+                    break;
+                case 'bool':
+                    $filtered = filter_var($value, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+                    break;
+                default:
+                    # code...
+                    break;
+            }
+
+            return $filtered;
+    }
+
+
     /**
      * Update a record in DB
      *

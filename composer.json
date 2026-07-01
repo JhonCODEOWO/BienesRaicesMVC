@@ -16,7 +16,8 @@
         "psr-4": {
             "Models\\": "./models",
             "Routes\\": "./Routes",
-            "Controllers\\": "./controllers"
+            "Controllers\\": "./controllers",
+            "Core\\": "./core"
         }
     }
 }

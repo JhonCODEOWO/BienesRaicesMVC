@@ -2,6 +2,7 @@
 
 namespace Controllers;
 
+use Core\Validator;
 use Intervention\Image\Drivers\Gd\Driver;
 use Intervention\Image\ImageManager;
 use Models\Propiedad;
@@ -19,19 +20,38 @@ class PropiedadController {
     }
 
     function create(){
-        $errores = Propiedad::getErrors();
         $propiedad = new Propiedad();
         $vendedores = Vendedores::all();
 
         view('propiedades/CreateView', [
-            'errores' => $errores,
             'propiedad' => $propiedad,
             'vendedores' => $vendedores,
         ], 'layout/MainLayout');
     }
 
     function save(Request $req) {
+        $vendedores = Vendedores::all();
         $propiedad = new Propiedad($req->body());
+        $validator = new Validator($req->body(), [
+            "titulo" => "required|minLength:10",
+            "precio" => "required|min:1000",
+            "descripcion" => "required",
+            "habitaciones" => "required",
+            "wc" => "required",
+            "estacionamiento" => "required",
+            "idVendedor" => "required",
+        ]);
+
+        $result = $validator->validate();
+
+        if($result->hasErrors()) {
+            view('propiedades/CreateView', [
+                'errores' => $result,
+                'propiedad' => $propiedad,
+                'vendedores' => $vendedores,
+            ], 'layout/MainLayout');
+            exit;
+        }
         $uploadedFile = $_FILES['imagen']['tmp_name'];
         $imageName = '';
         $transformedImage = null;
@@ -46,18 +66,6 @@ class PropiedadController {
             $propiedad->setImagen($imageName);
         }
 
-        $errores = $propiedad->validate();
-        $vendedores = Vendedores::all();
-
-        if(!empty($errores)) {
-            view('propiedades/CreateView', [
-                'errores' => $errores,
-                'propiedad' => $propiedad,
-                'vendedores' => $vendedores,
-            ], 'layout/MainLayout');
-            exit;
-        }
-
         if (!is_dir(CARPETA_IMAGENES)) {
             mkdir(CARPETA_IMAGENES);
         }
@@ -69,16 +77,59 @@ class PropiedadController {
     }
 
     function edit(Request $req){
-        $errores = Propiedad::getErrors();
         $propiedad = Propiedad::find($req->getUrlParamValue('id'));
+        $vendedores = Vendedores::all();
 
         view('propiedades/UpdateView', [
             "propiedad" => $propiedad,
-            "errores" => $errores,
+            "vendedores" => $vendedores,
         ], 'layout/MainLayout');
     }
 
     function update(Request $req) {
-        debug($req);
+        //Get the id from url parameter.
+        $id = filter_var($req->getUrlParamValue('id'), FILTER_VALIDATE_INT);
+
+        if(!$id) redirectTo('/admin', [
+            "mensaje" => 3
+        ]);
+
+        $vendedores = Vendedores::all();
+        $propiedad = Propiedad::find($id);
+        $validator = new Validator($req->body(), [
+            "titulo" => "required|minLength:10",
+            "precio" => "required|min:1000",
+            "descripcion" => "required",
+            "habitaciones" => "required",
+            "wc" => "required",
+            "estacionamiento" => "required",
+            "idVendedor" => "required",
+        ]);
+        $errorBag = $validator->validate();
+
+        if($errorBag->hasErrors()){
+            view('propiedades/UpdateView', [
+                "errores" => $errorBag,
+                "propiedad" => $propiedad,
+                "vendedores" => $vendedores,
+            ], "layout/MainLayout");
+            exit;
+        }
+
+        $propiedad->rehydrate($req->body());
+
+        //Try to get uploaded files.
+        $image = $_FILES['imagen'] ?? null;
+        $imageName = '';
+        $transformedImage = null;
+
+        //Upload new image
+        if(
+            $image &&
+            $image['error'] === UPLOAD_ERR_OK && is_uploaded_file($image['tmp_name'])
+        ){
+            //Delete previous image.
+            $propiedad->deleteImage();
+        }
     }
 }

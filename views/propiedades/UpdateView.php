@@ -9,13 +9,9 @@
 </div>
 
 <main class="contenedor seccion contenido-centrado">
-    <?php foreach ($errores as $error) : ?>
-        <div class="alerta error">
-            <?php echo $error; ?>
-        </div>
-    <?php endforeach; ?>
 
-    <form class="formulario" method="POST" enctype="multipart/form-data" action="/propiedades/update">
+
+    <form class="formulario" method="POST" enctype="multipart/form-data" action="/propiedades/update/<?php echo $propiedad->idPropiedades ?>">
         
         <?php include __DIR__.'/propiedadesForm.php'; ?>
 

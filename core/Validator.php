@@ -2,6 +2,7 @@
 
 namespace Core;
 
+use Error;
 use Exception;
 
 class Validator {
@@ -70,11 +71,55 @@ class Validator {
         }
         return $validRules;
     }
-
+    
+    /**
+     *  Checks if the value passed has a valid value and is filled with something.
+     *
+     * @param  mixed $input The value to check.
+     * @param  mixed $param
+     * @return bool
+     */
     public function required(mixed $input, $param = null): bool{
+        if(is_array($input)) return count($input) != 0;
         return (isset($input) && $input != null && $input != "");
     }
+    
+    /**
+     *  Checks if the input file contains a valid file instance and is a valid uploaded file.
+     *
+     * @param  mixed $array The array with all UploadedFile instances.
+     * @param  mixed $param Rule param, not needed.
+     * @return bool
+     */
+    public function file(array $array, $param = null) : bool{
+        if(count($array) > 1) throw new Error("You are using rule file in a multiple file field, use files instead.");
+        $file = $array[0];
+        return $file instanceof UploadedFile && is_uploaded_file($file->getTmpName());
+    }
+    
+    /**
+     *  Checks the size of uploaded files are valid in the range defined by the param of the rule.
+     *
+     * @param  mixed $files
+     * @param  mixed $param
+     * @return bool
+     */
+    public function maxSize(mixed $files, $param = null): bool{
+        $state = true;
+        $bytes = $param * 1048576;
+        foreach ($files as $file) {
+            if(!($file instanceof UploadedFile)) continue;
+            
+            if($file->getSize() > $bytes) {
+                $state = false;
+                break;
+            }
+        }
 
+        return $state;
+    }
+
+    //TODO: Validator of multiple files.
     public function min(mixed $input, mixed $minValue): bool{
         return ($input >= $minValue);
     }
@@ -98,7 +143,9 @@ class Validator {
     public function validate() : Errors{
         foreach ($this->validationRules as $field => $rules) {
             foreach ($rules as $index => $rule) {
-                $inputValue = $this->data[$field] ?? null; //Input value from data.
+                $inputValue = $this->getInputValue($field); //Input value from data.
+
+                //Rule info for each Input registered.
                 $ruleFnName = $rule['name'];
                 $ruleParam = $rule['value'];
                 
@@ -131,6 +178,31 @@ class Validator {
             [$field, $paramVal],
             $errorMessage
         );
+    }
+
+        
+    /**
+     *  Retrieves a value based on the arg provided
+     * 
+     *  inputs: files.imagen | username | profile.name | users.0.name
+     *  output: The respective value from the data.
+     *
+     * @param  string $path A Input name or a path to get values from associative arrays.
+     * @return mixed
+     */
+    private function getInputValue(string $path) : mixed{
+        $pathSegments = explode('.', $path);
+        $value = $this->data; //Value to return, re-assigned only if the path is valid.
+
+        foreach ($pathSegments as $index => $segmentValue) {
+            if (!is_array($value)) {
+                throw new Error("Cannot access $segmentValue on non-array value.");
+            }
+            if(!array_key_exists($segmentValue, $value)) throw new Error("The segment $segmentValue provided in path doesn't exists.");
+            
+            $value = $value[$segmentValue];
+        }
+        return $value;
     }
 
     public function invalid(): bool {

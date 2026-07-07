@@ -111,7 +111,7 @@ class Router {
                 "queryParams" => $_GET,
                 "method" => $method,
                 "body" => $_POST,
-            ]);
+            ], $_FILES);
             $this->execHandler($handler, $req);
         }
     }

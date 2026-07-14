@@ -13,10 +13,13 @@
     <?php endif?>
 
     <label for="imagen">Imagen: </label>
-    <?php if(isset($_GET['id'])): ?>
+    <?php if(isset($editing)): ?>
         <img src="/imagenes/<?php echo $propiedad->imagen ?>" alt="">
     <?php endif ?>
     <input name="imagen" type="file" id="imagen">
+    <?php if(isset($errores)): ?> 
+        <p class="text-error text-xs text-red-500"><?php echo $errores->getFrom('files.imagen') ?></p>
+    <?php endif?>
 
     <label for="descripcion">Descripción:</label>
     <textarea name="descripcion" id="descripcion"><?php echo safe($propiedad->descripcion); ?></textarea>

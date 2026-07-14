@@ -33,6 +33,7 @@ class PropiedadController {
         $vendedores = Vendedores::all();
         $propiedad = new Propiedad($req->body());
         $validator = new Validator($req->body(), [
+            "files.imagen" => "file",
             "titulo" => "required|minLength:10",
             "precio" => "required|min:1000",
             "descripcion" => "required",
@@ -52,7 +53,8 @@ class PropiedadController {
             ], 'layout/MainLayout');
             exit;
         }
-        $uploadedFile = $_FILES['imagen']['tmp_name'];
+
+        $uploadedFile = $req->getFile('imagen');
         $imageName = '';
         $transformedImage = null;
 
@@ -83,6 +85,7 @@ class PropiedadController {
         view('propiedades/UpdateView', [
             "propiedad" => $propiedad,
             "vendedores" => $vendedores,
+            "editing" => true,
         ], 'layout/MainLayout');
     }
 
@@ -97,6 +100,7 @@ class PropiedadController {
         $vendedores = Vendedores::all();
         $propiedad = Propiedad::find($id);
         $validator = new Validator($req->body(), [
+            "files.imagen" => "required|file|maxSize:5",
             "titulo" => "required|minLength:10",
             "precio" => "required|min:1000",
             "descripcion" => "required",
@@ -112,6 +116,7 @@ class PropiedadController {
                 "errores" => $errorBag,
                 "propiedad" => $propiedad,
                 "vendedores" => $vendedores,
+                "editing" => true,
             ], "layout/MainLayout");
             exit;
         }
@@ -128,8 +133,18 @@ class PropiedadController {
             $image &&
             $image['error'] === UPLOAD_ERR_OK && is_uploaded_file($image['tmp_name'])
         ){
+            $format = explode('/', $_FILES['imagen']['type'])[1];
+            $imageName = md5(uniqid(rand(), true)).".$format";
+
+            $manager = new ImageManager(Driver::class);
+            $transformedImage = $manager->read($_FILES['imagen']['tmp_name'])->cover(800, 600);
+            $propiedad->setImagen($imageName);
+            
             //Delete previous image.
             $propiedad->deleteImage();
+            $transformedImage->save(CARPETA_IMAGENES."$imageName");
         }
+
+        $propiedad->update();
     }
 }

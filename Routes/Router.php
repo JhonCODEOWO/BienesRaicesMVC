@@ -1,6 +1,8 @@
 <?php
 
 namespace Routes;
+
+use Error;
 use Routes\Request;
 
 class Router {
@@ -68,7 +70,7 @@ class Router {
 
             $isMatch = true;
 
-            //Check if the incoming path match
+            // Iterate each registered path segment...
             foreach ($regSegments as $index => $urlSegment) {
                 $totalChars = strlen($urlSegment);
                 if($totalChars === 0) continue;
@@ -76,6 +78,7 @@ class Router {
                 $isParam = ($urlSegment[0] === '{' && $urlSegment[$totalChars - 1] === '}' && $totalChars > 0);
                 if($isParam) continue;
 
+                // Checks if the incoming request segment by index doesn't match with the registered segment value
                 if($urlSegment != $incomingReqSegments[$index]) {
                     $isMatch = false;
                     break;
@@ -129,12 +132,16 @@ class Router {
         //Check if its an array
         if(is_array($handler)){
             [$class, $fn] = $handler;
-            if(class_exists($class)){
-                $controller = new $class();
-                if(method_exists($controller, $fn)){
-                    return call_user_func([$controller, $fn], $req);
-                }
-            }
+            
+            if(!class_exists($class)) 
+                throw new Error("Unexpected class $class to execute, verify that your Controller file has the same name that the class declaration");
+            
+            $controller = new $class();
+
+            if(!method_exists($controller, $fn))
+                throw new Error("The method $fn doesn't exists in $class class. Create it or write the correct function name");
+            
+            return call_user_func([$controller, $fn], $req);
         }
     }
 }

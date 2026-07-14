@@ -68,7 +68,7 @@
                     <input type="submit" class="boton boton-rojo" value="Borrar">
                 </form>
                     
-                    <a href="/admin/vendedores/Actualizar.php?id=<?php echo $vendedor->idVendedor; ?>" class="boton boton-verde">Actualizar</a>
+                    <a href="/vendedores/edit/<?php echo $vendedor->idVendedor; ?>" class="boton boton-verde">Actualizar</a>
                 </td>
             </tr>
 

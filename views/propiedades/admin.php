@@ -30,7 +30,7 @@
                 </td>
                 <td>$ <?php echo $propiedad->precio; ?></td>
                 <td>
-                <form method="POST">
+                <form method="POST" action="/propiedades/delete/<?php echo $propiedad->idPropiedades ?>">
                     <input type="hidden" name="id_eliminar" value="<?php echo $propiedad->idPropiedades; ?>">
                     <input type="hidden" name="type" value="propiedad">
                     <input type="submit" class="boton boton-rojo" value="Borrar">

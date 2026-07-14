@@ -12,6 +12,7 @@ $router->get('/propiedades/create', [PropiedadController::class, 'create']);
 $router->post('/propiedades/create', [PropiedadController::class, 'save']);
 $router->get('/propiedades/edit/{id}', [PropiedadController::class, 'edit']);
 $router->post('/propiedades/update/{id}', [PropiedadController::class, 'update']);
+$router->post('/propiedades/delete/{id}', [PropiedadController::class, 'delete']);
 
 //Handling the incoming request.
 $router->checkRoutes();

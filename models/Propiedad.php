@@ -59,9 +59,10 @@ class Propiedad extends ActiveRecord{
         $this->imagen=$imageName;
     }
 
-    public function deleteImage() {
+    public function deleteImage(): static {
         $previousPath = CARPETA_IMAGENES . $this->imagen;
 
         if(file_exists($previousPath)) unlink($previousPath);
+        return $this;
     }
 }

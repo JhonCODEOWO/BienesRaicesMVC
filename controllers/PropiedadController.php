@@ -150,7 +150,7 @@ class PropiedadController {
 
     function delete(Request $req) {
         $propiedad = Propiedad::find($req->getUrlParamValue('id'));
-        $propiedad->delete();
+        $propiedad->deleteImage()->delete();
         return redirectTo('/admin');
     }
 }

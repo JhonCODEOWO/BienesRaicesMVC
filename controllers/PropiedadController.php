@@ -10,13 +10,16 @@ use Models\Vendedores;
 use Routes\Request;
 
 class PropiedadController {
-    function index() {
-        $message = query('mensaje');
+    function index(Request $req) {
+        $message = $req->getQueryParam('mensaje');
+
         $propiedades = Propiedad::all();
         $vendedores = Vendedores::all();
 
         view('propiedades/admin',
-        ['propiedades' => $propiedades, 'vendedores' => $vendedores, 'mensaje' => null], 'layout/MainLayout');
+        [
+            'propiedades' => $propiedades, 'vendedores' => $vendedores, 
+            'mensaje' => $message], 'layout/MainLayout');
     }
 
     function create(){

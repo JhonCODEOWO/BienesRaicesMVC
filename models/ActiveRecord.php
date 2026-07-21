@@ -182,7 +182,7 @@ class ActiveRecord {
     public static function limit(int $limit = 0): array{
         $query = "SELECT * FROM " . static::$table . " LIMIT $limit";
 
-        debug($query);
+        return static::execQuery($query);
     }
 
     /**

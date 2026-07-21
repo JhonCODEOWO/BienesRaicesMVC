@@ -80,4 +80,16 @@ class VendedoresController {
 
         redirectTo('/admin');
     }
+
+    function delete(Request $req) {
+        $id = filter_var($req->getUrlParamValue('id'), FILTER_VALIDATE_INT);
+
+        if(!$id) redirectTo('/admin');
+
+        $vendedor = Vendedores::find($id);
+
+        $vendedor->delete();
+
+        redirectTo("/admin", ["mensaje" => 4]);
+    }
 }

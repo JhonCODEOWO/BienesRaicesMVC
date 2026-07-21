@@ -2,7 +2,7 @@
 
 <main>
     <?php if($mensaje != null): ?>
-        <p class="alerta exito"><?php echo getErrorMessage(intval($mensaje)) ?></p>
+        <p class="p-3 bg-blue-500 text-white rounded my-3"><?php echo getErrorMessage(intval($mensaje)) ?></p>
     <?php endif ?>
 
     <a href="/propiedades/create" class="btn btn-success">Nueva Propiedad</a>
@@ -62,7 +62,7 @@
                 <td><?php echo $vendedor->nombre . " " . $vendedor->apellido; ?></td>
                 <td><?php echo $vendedor->telefono; ?></td>
                 <td>
-                <form method="POST">
+                <form method="POST" action="/vendedores/delete/<?php echo $vendedor->idVendedor; ?>">
                     <input type="hidden" name="id_eliminar" value="<?php echo $vendedor->idVendedor; ?>">
                     <input type="hidden" name="type" value="vendedor">
                     <input type="submit" class="boton boton-rojo" value="Borrar">

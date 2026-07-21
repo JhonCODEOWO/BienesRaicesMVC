@@ -57,13 +57,13 @@ class Router {
      * @return void
      */
     private function resolve(string $method, string $path){
-        $incomingReqSegments = explode('/', parse_url($path, PHP_URL_PATH));
+        $incomingReqSegments = explode('/', parse_url(trim($path, "/"), PHP_URL_PATH));
         $methodRegisteredRoutes = $this->routes[$method]; //Get all routes by method
         $routeMatch = null;
 
         //Check if almost one of them matches with incoming path
         foreach ($methodRegisteredRoutes as $registeredRoute => $value) {
-            $regSegments = explode('/', $registeredRoute);
+            $regSegments = explode('/', trim($registeredRoute, "/"));
 
             //If the incoming request path doesn't match with registered path segments skip it
             if(count($incomingReqSegments) != count($regSegments)) continue;
@@ -73,9 +73,8 @@ class Router {
             // Iterate each registered path segment...
             foreach ($regSegments as $index => $urlSegment) {
                 $totalChars = strlen($urlSegment);
-                if($totalChars === 0) continue;
-                
-                $isParam = ($urlSegment[0] === '{' && $urlSegment[$totalChars - 1] === '}' && $totalChars > 0);
+
+                $isParam = ($totalChars > 0 &&$urlSegment[0] === '{' && $urlSegment[$totalChars - 1] === '}' && $totalChars > 0);
                 if($isParam) continue;
 
                 // Checks if the incoming request segment by index doesn't match with the registered segment value

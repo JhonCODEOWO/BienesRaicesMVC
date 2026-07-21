@@ -30,7 +30,19 @@ class PublicController {
     }
 
     public function propiedad(Request $req) {
-        debug($req->getUrlParamValue('id'));
+        $id = filter_var($req->getUrlParamValue('id'), FILTER_VALIDATE_INT);
+
+        if(!$id) redirectTo('/');
+
+        $propiedad = Propiedad::find($id);
+
+        view(
+            'propiedades/propiedad',
+            [
+                "propiedad" => $propiedad
+            ],
+            'layout/MainLayout'
+        );
     }
 
     public function contactUs(){

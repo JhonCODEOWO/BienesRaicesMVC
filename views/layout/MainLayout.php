@@ -18,15 +18,15 @@
                 </div>
 
                 <nav id="navegacion" class="hidden md:block navegacion">
-                    <a href="nosotros.php">Anuncios</a>
-                    <a href="anuncios.php">Anuncios</a>
-                    <a href="blog.php">Blog</a>
-                    <a href="contacto.php">Contacto</a>
+                    <a href="/about">Acerca De</a>
+                    <a href="/propiedades">Propiedades</a>
+                    <a href="/blog">Blog</a>
+                    <a href="/contactUs">Contacto</a>
                 </nav>
         </div>
     </header>
     
-    <div class="min-h-dvh mx-2 my-1">
+    <div class="min-h-dvh">
         <?php echo $content; ?>
     </div>
 

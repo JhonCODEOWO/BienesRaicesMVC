@@ -1,6 +1,8 @@
 <?php
 
+use Controllers\BlogController;
 use Controllers\PropiedadController;
+use Controllers\PublicController;
 use Controllers\VendedoresController;
 
 use Routes\Router;
@@ -21,6 +23,14 @@ $router->post('/vendedores/create', [VendedoresController::class, 'store']);
 $router->get('/vendedores/edit/{id}', [VendedoresController::class, 'edit']);
 $router->post('/vendedores/update/{id}', [VendedoresController::class, 'update']);
 $router->post('/vendedores/delete/{id}', [VendedoresController::class, 'delete']);
+
+$router->get('/', [PublicController::class, 'index']);
+$router->get('/about', [PublicController::class, 'about']);
+$router->get('/propiedades', [PublicController::class, 'propiedades']);
+$router->get('/propiedad', [PublicController::class, 'propiedad']);
+$router->get('/contactUs', [PublicController::class, 'contactUs']);
+
+$router->get('/blog', [BlogController::class, 'index']);
 
 //Handling the incoming request.
 $router->checkRoutes();

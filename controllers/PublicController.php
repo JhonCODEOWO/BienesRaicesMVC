@@ -14,7 +14,11 @@ class PublicController {
     }
 
     public function about() {
-        echo "About";
+        view(
+            "public/about", 
+            [], 
+            'layout/MainLayout'
+        );
     }
 
     public function propiedades() {

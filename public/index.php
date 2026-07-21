@@ -27,7 +27,7 @@ $router->post('/vendedores/delete/{id}', [VendedoresController::class, 'delete']
 $router->get('/', [PublicController::class, 'index']);
 $router->get('/about', [PublicController::class, 'about']);
 $router->get('/propiedades', [PublicController::class, 'propiedades']);
-$router->get('/propiedad', [PublicController::class, 'propiedad']);
+$router->get('/propiedad/{id}', [PublicController::class, 'propiedad']);
 $router->get('/contactUs', [PublicController::class, 'contactUs']);
 
 $router->get('/blog', [BlogController::class, 'index']);

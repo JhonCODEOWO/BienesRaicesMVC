@@ -29,7 +29,7 @@ class Router {
      * @return void
      */
     public function get(string $path, callable|array $handler){
-        $this->addRoute('GET', $path, $handler);
+        $this->addRoute('GET', trim($path, "/"), $handler);
     }
 
     /**
@@ -40,7 +40,7 @@ class Router {
      * @return void
      */
     public function post(string $path, callable|array $handler){
-        $this->addRoute('POST', $path, $handler);
+        $this->addRoute('POST', trim($path, "/"), $handler);
     }
 
     // Main structural handler to store paths
@@ -63,7 +63,7 @@ class Router {
 
         //Check if almost one of them matches with incoming path
         foreach ($methodRegisteredRoutes as $registeredRoute => $value) {
-            $regSegments = explode('/', trim($registeredRoute, "/"));
+            $regSegments = explode('/', $registeredRoute);
 
             //If the incoming request path doesn't match with registered path segments skip it
             if(count($incomingReqSegments) != count($regSegments)) continue;

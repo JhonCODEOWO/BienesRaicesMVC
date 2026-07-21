@@ -3,12 +3,13 @@
 namespace Controllers;
 
 use Models\Propiedad;
+use Routes\Request;
 
 class PublicController {
     public function index() {
         $propiedades = Propiedad::limit(5);
         view('public/index', 
-            ["propiedades" => $propiedades], 
+            ["propiedades" => $propiedades, "onLimit" => true], 
             'layout/MainLayout'
         );
     }
@@ -22,11 +23,14 @@ class PublicController {
     }
 
     public function propiedades() {
-
+        $propiedades = Propiedad::all();
+        view('public/propiedades', [
+            "propiedades" => $propiedades
+        ], 'layout/MainLayout');
     }
 
-    public function propiedad() {
-
+    public function propiedad(Request $req) {
+        debug($req->getUrlParamValue('id'));
     }
 
     public function contactUs(){

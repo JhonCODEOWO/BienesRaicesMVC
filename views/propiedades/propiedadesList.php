@@ -1,3 +1,7 @@
+<?php
+    $onLimit = $onLimit ?? false;
+?>
+
 <?php if(count($propiedades) === 0) { ?>
     <p class="text-center">No hay elementos para mostrar</p>
 <?php } else {?>
@@ -28,12 +32,15 @@
                         </ul>
 
 
-                        <a href="anuncio.php?id=<?php echo $propiedad->idPropiedades; ?>" class="p-2 bg-green-700 rounded block">Ver Propiedad</a>
+                        <a href="/propiedad/<?php echo $propiedad->idPropiedades; ?>" class="p-2 bg-green-700 rounded block">Ver Propiedad</a>
                     </div>
                 </div>
         <?php endforeach;  ?>
-        <div class="ver-todas">
-            <a href="anuncios.php" class="boton boton-verde">Ver Todas</a>
-        </div>
+
+        <?php if($onLimit): ?>
+            <div class="ver-todas">
+                <a href="/propiedades" class="boton boton-verde">Ver Todas</a>
+            </div>
+        <?php endif ?>
     </div>
 <?php } ?>

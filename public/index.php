@@ -29,6 +29,7 @@ $router->get('/about', [PublicController::class, 'about']);
 $router->get('/propiedades', [PublicController::class, 'propiedades']);
 $router->get('/propiedad/{id}', [PublicController::class, 'propiedad']);
 $router->get('/contactUs', [PublicController::class, 'contactUs']);
+$router->post('/contactUs', [PublicController::class, 'contactingUs']);
 
 $router->get('/blog', [BlogController::class, 'index']);
 $router->get('/blog/entry', [BlogController::class, 'blogEntry']);

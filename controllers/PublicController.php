@@ -2,6 +2,7 @@
 
 namespace Controllers;
 
+use Core\Validator;
 use Models\Propiedad;
 use Routes\Request;
 
@@ -46,6 +47,31 @@ class PublicController {
     }
 
     public function contactUs(){
+        view('public/contactUs', [], 'layout/MainLayout');
+    }
 
+    public function contactingUs(Request $req){
+        $body = $req->getBody([
+            "opciones" => null,
+            "tipo_contacto" => null,
+        ]);
+
+        $validator = new Validator($body, [
+            'nombre' => 'required',
+            'email' => 'required',
+            'telefono' => 'required',
+            'mensaje' => 'required',
+            'opciones' => 'required',
+            'tipo_contacto' => 'required',
+        ]);
+
+        $resultErrors = $validator->validate();
+
+        if($resultErrors->hasErrors()){
+            view('public/contactUs', [
+                "errors" => $resultErrors
+            ], 'layout/MainLayout');
+            exit;
+        }
     }
 }

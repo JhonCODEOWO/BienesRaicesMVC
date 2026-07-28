@@ -56,14 +56,27 @@ class Request {
     // BODY
     // =========================
 
+        
+    /**
+     * 
+     *  @deprecated This method doesn't provide true values since class Request supports initialize values based on a schema provided.
+     * @param  string $key The input name stored as key inside body property
+     * @return mixed The value of the input name as key inside body property.
+     */
     public function getBodyValue(string $key): mixed
     {
         return $this->body[$key] ?? null;
     }
-
-    public function getBody(): array
+    
+    /**
+     *  normalizes the body request using the schema provided.
+     *
+     * @param  array $schema The schema to normalize the output with initial values if any of them doesn't exists inside body property yet.
+     * @return array Normalized array with values and keys provided in schema arg.
+     */
+    public function getBody(array $schema = []): array
     {
-        return $this->body;
+        return $this->normalizeBodyEntries($schema, $this->body);
     }
 
     public function body(): array {
@@ -82,6 +95,31 @@ class Request {
     // =========================
     // HELPERS
     // =========================
+
+        
+    /**
+     * normalizeBodyEntries
+     *  Normalizes the body property based on the schema provided.
+     *
+     *  @todo  Add path searching feature to support: name[user], name[number] structures inside body.
+     * @param  array $schema A array schema with keys and values that should exists in the body even they aren't initialized in constructor.
+     * @param  array $unnormalizedBody A array with values previously not normalized.
+     * @return array A new array with schema values incrusted if any of them doesn't exists in `$unnormalizedBody` arg.
+     * 
+     * 
+     */
+    private function normalizeBodyEntries(array $schema, array $unnormalizedBody) : array{
+        $normalizedBody = $unnormalizedBody;
+        
+        foreach ($schema as $inputName => $value) {
+            if(array_key_exists($inputName, $unnormalizedBody)) continue;
+
+            $normalizedBody[$inputName] = $value;
+        }
+
+
+        return $normalizedBody;
+    }
 
     public function all(): array
     {

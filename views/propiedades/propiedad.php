@@ -1,9 +1,9 @@
-<main class="w-1/2 mx-auto my-0">
+<main class="xl:w-1/2 mx-auto my-0">
     <div class="relative">
         <h1 class="absolute text-center bg-gradient-to-b from-neutral-800/50 to-neutral-800/50 left-0 right-0 bg-opacity"><?php echo $propiedad->titulo; ?></h1>
         <img src="/imagenes/<?php echo $propiedad->imagen; ?>" alt="Imagen Anuncio">
     </div>
-    <div class="resumen-propiedad flex justify-between p-5 items-center">
+    <div class="resumen-propiedad flex flex-col md:flex-row justify-between p-5 items-center">
         <p class="text-green-500 text-4xl">Precio: $<?php echo $propiedad->precio; ?></p>
         <ul class="iconos-caracteristicas flex gap-x-4 text-center">
             <li class="flex flex-col">

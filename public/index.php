@@ -31,6 +31,7 @@ $router->get('/propiedad/{id}', [PublicController::class, 'propiedad']);
 $router->get('/contactUs', [PublicController::class, 'contactUs']);
 
 $router->get('/blog', [BlogController::class, 'index']);
+$router->get('/blog/entry', [BlogController::class, 'blogEntry']);
 
 //Handling the incoming request.
 $router->checkRoutes();

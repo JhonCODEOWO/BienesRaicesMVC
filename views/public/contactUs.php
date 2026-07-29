@@ -21,9 +21,15 @@
 
             <label for="telefono">Teléfono:</label>
             <input type="tel" id="telefono" placeholder="Tu Teléfono" name="telefono">
+            <?php if(isset($errors)): ?>
+                <p class="text-xs text-red-500"><?php echo $errors->getFrom('telefono') ?></p>
+            <?php endif ?>
 
             <label for="mensaje">Mensaje: </label>
             <textarea id="mensaje" name="mensaje" ></textarea>
+            <?php if(isset($errors)): ?>
+                <p class="text-xs text-red-500"><?php echo $errors->getFrom('mensaje') ?></p>
+            <?php endif ?>
 
         </fieldset>
 
@@ -36,9 +42,15 @@
                 <option value="Compra">Compra</option>
                 <option value="Vende">Vende</option>
             </select>
+            <?php if(isset($errors)): ?>
+                <p class="text-xs text-red-500"><?php echo $errors->getFrom('opciones') ?></p>
+            <?php endif ?>
 
             <label for="cantidad">Cantidad:</label>
             <input type="number" min="0" max="100" step="5" name="cantidad">
+            <?php if(isset($errors)): ?>
+                <p class="text-xs text-red-500"><?php echo $errors->getFrom('cantidad') ?></p>
+            <?php endif ?>
         </fieldset>
 
         <fieldset>

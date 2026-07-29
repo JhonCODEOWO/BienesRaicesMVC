@@ -8,7 +8,7 @@ function conectarDb(): mysqli
         return $db;
     } catch (mysqli_sql_exception $ex) {
         $errorMessage = $ex->getMessage();
-        include __DIR__.'../../../error.php';
+        include __DIR__.'/../templates/error.php';
         exit;
     }
 }

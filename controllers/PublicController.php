@@ -2,6 +2,7 @@
 
 namespace Controllers;
 
+use Core\Mailer\Mailer;
 use Core\Validator;
 use Models\Propiedad;
 use Routes\Request;
@@ -63,6 +64,7 @@ class PublicController {
             'mensaje' => 'required',
             'opciones' => 'required',
             'tipo_contacto' => 'required',
+            'cantidad' => 'required'
         ]);
 
         $resultErrors = $validator->validate();
@@ -73,5 +75,26 @@ class PublicController {
             ], 'layout/MainLayout');
             exit;
         }
+
+        $mailer = new Mailer();
+        
+        $mailer->subject("Propiedad request")->from()->to([
+            "Yo" => "jjv20618@gmail.com"
+        ])->useTemplate(
+            'contact_us', 
+            [
+                'nombre' => $body['nombre'],
+                'telefono' => $body['telefono'],
+                'email' => $body['email'],
+                'mensaje' => $body['mensaje'],
+                'tipo_contacto' => $body['tipo_contacto'],
+                'hora' => $body['hora_contacto'],
+                'fecha' => $body['fecha_contacto'],
+            ]
+        );
+
+        $mailer->send();
+
+        view('public/contactUs', [], 'layout/MainLayout');
     }
 }

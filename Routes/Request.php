@@ -59,7 +59,7 @@ class Request {
         
     /**
      * 
-     *  @deprecated This method doesn't provide true values since class Request supports initialize values based on a schema provided.
+     *  @deprecated This method doesn't provide true values since class Request supports initialized values based on a schema provided.
      * @param  string $key The input name stored as key inside body property
      * @return mixed The value of the input name as key inside body property.
      */

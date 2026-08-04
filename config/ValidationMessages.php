@@ -11,4 +11,5 @@ return [
     "file" => "The :field field requires that you select a file.",
     "maxSize" => "Select file(s) that not exceed :value megabytes",
     "requiredIf" => "The :field field is required.",
+    "email" => "The :field is not a valid email address."
 ];

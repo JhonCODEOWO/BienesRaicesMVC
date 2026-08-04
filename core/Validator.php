@@ -142,7 +142,15 @@ class Validator {
     public function min(mixed $input, mixed $minValue): bool{
         return ($input >= $minValue);
     }
-
+    
+    /**
+     * minLength
+     * Checks if a input field value has te min length specified.
+     *
+     * @param  mixed $input
+     * @param  mixed $length
+     * @return bool
+     */
     public function minLength(mixed $input, string $length): bool {
         $type = gettype($input);
         switch ($type) {
@@ -152,6 +160,10 @@ class Validator {
             default:
                 return (strlen($input) >= $length);
         }
+    }
+
+    public function email(mixed $inputValue, $params){
+        return filter_var($inputValue, FILTER_VALIDATE_EMAIL);
     }
     
     /**

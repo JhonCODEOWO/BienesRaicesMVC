@@ -1,5 +1,8 @@
 <main class="contenedor seccion contenido-centrado">
     <h1 class="fw-300 centrar-texto">Iniciar Sesión</h1>
+    <?php if(isset($errors)): ?>
+        <p class="text-xs text-red-600"><?php echo $errors->getFrom('login') ?></p>
+    <?php endif ?>
 
     <form method="POST" class="formulario" novalidate action="/login">
         <fieldset>

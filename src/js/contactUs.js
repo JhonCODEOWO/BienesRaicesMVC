@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     
-    const radioButtons = document.querySelectorAll('input[name="tipo_contacto"]');
-    const radioChecked = document.querySelector('input[name="tipo_contacto"]:checked');
+    const radioButtons = document.querySelectorAll('input[name="tipo_contacto"]'); //Select all radio buttons with specific name
+    const radioChecked = document.querySelector('input[name="tipo_contacto"]:checked'); //Get the checked radio button
     
     if (radioChecked) {
         setContent(radioChecked.value);

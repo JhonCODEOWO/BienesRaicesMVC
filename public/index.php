@@ -1,6 +1,7 @@
 <?php
 
 use Controllers\BlogController;
+use Controllers\LoginController;
 use Controllers\PropiedadController;
 use Controllers\PublicController;
 use Controllers\VendedoresController;
@@ -33,6 +34,11 @@ $router->post('/contactUs', [PublicController::class, 'contactingUs']);
 
 $router->get('/blog', [BlogController::class, 'index']);
 $router->get('/blog/entry', [BlogController::class, 'blogEntry']);
+
+$router->get('/login', [LoginController::class, 'login']);
+$router->post('/login', [LoginController::class, 'authenticate']);
+$router->get('/register', [LoginController::class, 'register']);
+$router->post('/register', [LoginController::class, 'createAccount']);
 
 //Handling the incoming request.
 $router->checkRoutes();

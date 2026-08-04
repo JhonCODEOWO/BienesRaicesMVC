@@ -5,8 +5,11 @@ require 'config/database.php';
 require 'config/errorMessages.php';
 require __DIR__ . '/../vendor/autoload.php';
 
+use Core\Auth;
 use Dotenv\Dotenv;
 use Models\ActiveRecord;
+
+Auth::start();
 
 //Load and config environment variables.
 $dotenv = Dotenv::createImmutable(__DIR__.'/../');

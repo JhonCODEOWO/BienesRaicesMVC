@@ -7,7 +7,7 @@
 </head>
 <body>
     <h1><?php echo $nombre ?></h1>
-    <h2><?php echo $telefono . ' - ' . $email ?></h2>
+
 
     <h3>Asunto:</h3>
     <p>
@@ -16,8 +16,18 @@
 
     <strong>Contactar por: <?php echo $tipo_contacto ?></strong>
 
-    <?php if($tipo_contacto === 'telefono'): ?>
-        <p><strong>Cita:</strong><?php echo " $hora - $fecha"?></p>
-    <?php endif ?>
+<?php switch($tipo_contacto): ?>
+<?php case 'telefono': ?>
+        <p><strong>Cita:</strong><?php echo " $hora - $fecha - $telefono"?></p>
+<?php break; ?>
+        
+        <?php case 'correo': ?>
+            <p><strong>Cita:</strong><?php echo $email?></p>
+        <?php break; ?>
+        
+        <?php default ?>
+            
+        <?php break; ?>
+<?php endswitch; ?>
 </body>
 </html>

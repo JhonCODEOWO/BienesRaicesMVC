@@ -58,12 +58,12 @@ class PublicController {
         ]);
 
         $validator = new Validator($body, [
+            'email' => 'requiredIf:tipo_contacto,correo',
+            'telefono' => 'requiredIf:tipo_contacto,telefono',
+            'tipo_contacto' => 'required',
             'nombre' => 'required',
-            'email' => 'required',
-            'telefono' => 'required',
             'mensaje' => 'required',
             'opciones' => 'required',
-            'tipo_contacto' => 'required',
             'cantidad' => 'required'
         ]);
 
@@ -95,6 +95,6 @@ class PublicController {
 
         $mailer->send();
 
-        view('public/contactUs', [], 'layout/MainLayout');
+        redirectTo('contactUs');
     }
 }

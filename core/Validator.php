@@ -85,6 +85,25 @@ class Validator {
     }
     
     /**
+     * requiredIf Indicates if a field should be evaluated as required if another field has a specific value.
+     *
+     * @param  mixed $inputValue The actual value from the field to apply this rule.
+     * @param  mixed $params The rules to apply successfully the rule, it should be: `fieldName, valueToExpect`
+     * @return bool
+     */
+    public function requiredIf(mixed $inputValue, mixed $params): bool{
+        [$expectedField, $expectedFieldValue]= explode(',', $params); //Get parameters from rule
+
+        $fieldValue = $this->getInputValue($expectedField); //Get actual value from the field requested.
+
+        if($fieldValue === $expectedFieldValue) {
+            return $this->required($inputValue);
+        }
+
+        return true; 
+    }
+    
+    /**
      *  Checks if the input file contains a valid file instance and is a valid uploaded file.
      *
      * @param  mixed $array The array with all UploadedFile instances.

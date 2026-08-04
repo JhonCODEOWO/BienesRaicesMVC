@@ -10,4 +10,5 @@ return [
     "minLength" => "The :field needs :value characters or more.",
     "file" => "The :field field requires that you select a file.",
     "maxSize" => "Select file(s) that not exceed :value megabytes",
+    "requiredIf" => "The :field field is required.",
 ];

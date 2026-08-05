@@ -21,6 +21,5 @@ $dotenv->required('PRODUCTION')->isBoolean();
 
 //Set DB connection globally in the parent class.
 Database::setDb(conectarDb());
-$database = new Database();
-
-ActiveRecord::setDB($database->getDb());
+Auth::start();
+ActiveRecord::setDB(Database::getDb());

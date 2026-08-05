@@ -2,6 +2,7 @@
 
 namespace Controllers;
 
+use Core\Auth;
 use Core\Validator;
 use Models\User;
 use Routes\Request;
@@ -33,9 +34,9 @@ class LoginController {
             exit;
         }
 
-        $ableToAuth = $user->canAuthenticate();
+        $ableToAuth = Auth::attempt($user->email, $user->password, [User::class, 'usuarios']);
 
-        if(!$ableToAuth) {
+        if($ableToAuth === null) {
             $errors->add('No se puede autenticar', 'login');
             view(
                 'Auth/login',
@@ -47,7 +48,7 @@ class LoginController {
             exit;
         }
 
-        
+        Auth::login($ableToAuth);
         redirectTo('/');
     }
 

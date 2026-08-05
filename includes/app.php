@@ -6,6 +6,7 @@ require 'config/errorMessages.php';
 require __DIR__ . '/../vendor/autoload.php';
 
 use Core\Auth;
+use Core\Database;
 use Dotenv\Dotenv;
 use Models\ActiveRecord;
 
@@ -19,4 +20,7 @@ $dotenv->required(['DB_HOST', 'DB_DATABASE', 'DB_USERNAME'])->notEmpty();
 $dotenv->required('PRODUCTION')->isBoolean();
 
 //Set DB connection globally in the parent class.
-ActiveRecord::setDB(conectarDb());
+Database::setDb(conectarDb());
+$database = new Database();
+
+ActiveRecord::setDB($database->getDb());

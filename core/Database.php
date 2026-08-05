@@ -11,7 +11,7 @@ class Database {
         static::$db = $db;
     }
 
-    public function getDb(): mysqli{
+    public static function getDb(): mysqli{
         return static::$db;
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Core;
 
+use Core\JustArray\JustArray;
 use Error;
 use Exception;
 
@@ -222,18 +223,7 @@ class Validator {
      * @return mixed
      */
     private function getInputValue(string $path) : mixed{
-        $pathSegments = explode('.', $path);
-        $value = $this->data; //Value to return, re-assigned only if the path is valid.
-
-        foreach ($pathSegments as $index => $segmentValue) {
-            if (!is_array($value)) {
-                throw new Error("Cannot access $segmentValue on non-array value.");
-            }
-            if(!array_key_exists($segmentValue, $value)) throw new Error("The segment $segmentValue provided in path doesn't exists.");
-            
-            $value = $value[$segmentValue];
-        }
-        return $value;
+        return JustArray::find($this->data, $path);
     }
 
     public function invalid(): bool {

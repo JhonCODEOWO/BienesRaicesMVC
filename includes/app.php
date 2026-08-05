@@ -10,8 +10,6 @@ use Core\Database;
 use Dotenv\Dotenv;
 use Models\ActiveRecord;
 
-Auth::start();
-
 //Load and config environment variables.
 $dotenv = Dotenv::createImmutable(__DIR__.'/../');
 $dotenv->load();

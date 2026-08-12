@@ -105,6 +105,18 @@ class Validator {
     }
     
     /**
+     *  Confirms if the inputValue is the same in the param input name provided
+     *
+     * @param  mixed $inputValue Input value of the field where `confirmed` rule is typed.
+     * @param  mixed $confirmationPathField A string with a field name path to be compared.
+     * @return bool
+     */
+    public function confirmed(mixed $inputValue, string $confirmationPathField) : bool{
+        $anotherFieldValue = $this->getInputValue($confirmationPathField);
+        return $inputValue === $anotherFieldValue;
+    }
+    
+    /**
      *  Checks if the input file contains a valid file instance and is a valid uploaded file.
      *
      * @param  mixed $array The array with all UploadedFile instances.

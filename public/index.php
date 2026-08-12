@@ -6,7 +6,7 @@ use Controllers\PropiedadController;
 use Controllers\PublicController;
 use Controllers\TestingController;
 use Controllers\VendedoresController;
-
+use Middlewares\AuthMiddleware;
 use Routes\Router;
 
 require_once __DIR__ . '/../includes/app.php';
@@ -14,7 +14,7 @@ require_once __DIR__ . '/../includes/app.php';
 $router = new Router();
 //Registering routes.
 $router->get('/testing', [TestingController::class, 'testing']);
-$router->get('/admin', [PropiedadController::class, 'index']);
+$router->get('/admin', [PropiedadController::class, 'index'], [AuthMiddleware::class]);
 $router->get('/propiedades/create', [PropiedadController::class, 'create']);
 $router->post('/propiedades/create', [PropiedadController::class, 'save']);
 $router->get('/propiedades/edit/{id}', [PropiedadController::class, 'edit']);

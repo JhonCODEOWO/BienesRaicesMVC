@@ -2,7 +2,9 @@
 
 namespace Core;
 
+use Core\JustArray\JustArray;
 use Error;
+use Models\User;
 
 class Auth {
     public static function start(){
@@ -19,7 +21,7 @@ class Auth {
      * @param  mixed $modelInfo Array with two values: [ClassName::Class, 'tableName'] to search a user in.
      * @return ?object `null` if fails, `$classInstance` of the className provided by args if login can be successful.
      */
-    public static function attempt(string $email, string $password, array $modelInfo): ?object{
+    public static function attempt(string $email, string $password, array $modelInfo = [User::class, "users"]): ?object{
         $db = Database::getDb();
         [$class, $tableName] = $modelInfo;
         $userModelClassInstance = new $class();
@@ -44,16 +46,19 @@ class Auth {
     /**
      *  login a user into $_SESSION variable.
      *
-     * @param  mixed $userInstance A model instance with credentials (email & id) to login a user.
+     * @param  array $userData Array with all data to store in session. 
      * @return void
+     * 
+     * @example
+     * Auth::login(["id" => 2]);
      */
-    public static function login(mixed $userInstance){
+    public static function login(array $userData){
         static::start();
-        if(!property_exists($userInstance, 'email'))
-            throw new Error('To login a user you need pass at least a email or unique string to identify it.');
+        if(!key_exists('id', $userData))
+            throw new Error('To login a user you need pass at least a unique id to work with it.');
 
         $_SESSION['__auth'] = [
-            "user" => $userInstance,
+            "user" => $userData,
         ];
     }
 

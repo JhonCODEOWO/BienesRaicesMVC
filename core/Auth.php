@@ -51,8 +51,6 @@ class Auth {
         static::start();
         if(!property_exists($userInstance, 'email'))
             throw new Error('To login a user you need pass at least a email or unique string to identify it.');
-        
-        static::start();
 
         $_SESSION['__auth'] = [
             "user" => $userInstance,

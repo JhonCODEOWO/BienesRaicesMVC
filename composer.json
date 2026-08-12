@@ -18,7 +18,8 @@
             "Models\\": "./models",
             "Routes\\": "./Routes",
             "Controllers\\": "./controllers",
-            "Core\\": "./core"
+            "Core\\": "./core",
+            "Middlewares\\": "./middlewares"
         }
     }
 }

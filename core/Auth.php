@@ -64,6 +64,5 @@ class Auth {
 
     public static function logout(){
         unset($_SESSION['__auth']);
-        session_abort();
     }
 }

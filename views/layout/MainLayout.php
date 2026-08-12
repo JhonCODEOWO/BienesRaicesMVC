@@ -22,6 +22,13 @@
                     <a href="/propiedades">Propiedades</a>
                     <a href="/blog">Blog</a>
                     <a href="/contactUs">Contacto</a>
+                    <?php if(isset($_SESSION['__auth'])): ?>
+                        <form action="/logout" method="post">
+                            <button type="submit" class="cursor-pointer text-red-600">Cerrar sesión</button>
+                        </form>
+                    <?php else: ?>
+                        <a href="/login">Iniciar sesión</a>
+                    <?php endif ?>
                 </nav>
         </div>
     </header>

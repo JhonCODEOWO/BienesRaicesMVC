@@ -2,6 +2,7 @@
 
 namespace Routes;
 
+use Core\JustArray\JustArray;
 use Error;
 use Routes\Request;
 
@@ -26,10 +27,11 @@ class Router {
      *
      * @param  string $path The path to store
      * @param  callable | array $handler The callback to execute or an array with class controller name and handler function.
+     * @param array $middlewares The middlewares to execute before the request proceed
      * @return void
      */
-    public function get(string $path, callable|array $handler){
-        $this->addRoute('GET', trim($path, "/"), $handler);
+    public function get(string $path, callable|array $handler, array $middlewares = []){
+        $this->addRoute('GET', trim($path, "/"), $handler, $middlewares);
     }
 
     /**
@@ -37,16 +39,20 @@ class Router {
      *
      * @param  string $path The path to store
      * @param  callable | array $handler The callback to execute or an array with class controller name and handler function.
+     * @param array $middlewares The middlewares to execute before the request proceed
      * @return void
      */
-    public function post(string $path, callable|array $handler){
-        $this->addRoute('POST', trim($path, "/"), $handler);
+    public function post(string $path, callable|array $handler, array $middlewares = []) {
+        $this->addRoute('POST', trim($path, "/"), $handler, $middlewares);
     }
 
     // Main structural handler to store paths
-    private function addRoute(string $method, string $path, callable|array $handler): void {
+    private function addRoute(string $method, string $path, callable|array $handler, array $middlewares = []): void {
         // Normalize the route pattern and parse named variables if needed
-        $this->routes[$method][$path] = $handler;
+        $this->routes[$method][$path] = [
+            "handler" => $handler,
+            "middlewares" => $middlewares,
+        ];
     }
     
     /**
@@ -98,7 +104,11 @@ class Router {
 
         //Work with url params now...
         $urlParams = [];
-        $handler = $this->routes[$method][$routeMatch];
+        $route = $this->routes[$method][$routeMatch];
+        
+        $handler = JustArray::find($route, 'handler');
+        $middlewares = JustArray::find($route, 'middlewares');
+
         foreach (explode('/', $routeMatch) as $index => $value) {
             if(strlen($value) === 0) continue;
             if($value[0] === '{' && $value[strlen($value) - 1] === '}') {
@@ -125,6 +135,7 @@ class Router {
      * @return void
      */
     private function execHandler(callable | array $handler, Request $req){
+        
         //Check if its a callback and execute it
         if(is_callable($handler)) return call_user_func($handler, $req);
 

@@ -124,6 +124,8 @@ class Router {
                 "method" => $method,
                 "body" => $_POST,
             ], $_FILES);
+            /**TODO: CREATE BASE CALLBACK AND THEN ITERATE EACH MIDDLEWARE 
+             * EXECUTING ITS OWN NEXT FUNCTION BASED ON THE FIRS DECLARED*/
             $this->execHandler($handler, $req);
         }
     }

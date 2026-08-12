@@ -1,10 +1,7 @@
 <main class="contenedor seccion contenido-centrado">
-    <h1 class="fw-300 centrar-texto">Iniciar Sesión</h1>
-    <?php if(isset($errors)): ?>
-        <p class="text-xs text-red-600"><?php echo $errors->getFrom('login') ?></p>
-    <?php endif ?>
+    <h1 class="fw-300 centrar-texto">Crear usuario nuevo</h1>
 
-    <form method="POST" class="formulario" novalidate action="/login">
+    <form method="POST" class="formulario" novalidate action="/register">
         <fieldset>
             <legend>Email y Password</legend>
             <label for="email">Email:</label>
@@ -18,8 +15,12 @@
             <?php if(isset($errors)): ?>
                 <p class="text-xs text-red-600"><?php echo $errors->getFrom('password') ?></p>
             <?php endif ?>
+            <label for="password_confirmation">Confirmar contraseña: </label>
+            <input type="password" name="password_confirmation" id="password" placeholder="Confirma tu contraseña" >
+            <?php if(isset($errors)): ?>
+                <p class="text-xs text-red-600"><?php echo $errors->getFrom('password_confirmation') ?></p>
+            <?php endif ?>
         </fieldset>
         <input type="submit" value="Iniciar Sesión" class="boton boton-verde">
-        <a href="/register" class="text-xs text-blue-500 underline">¿Crear cuenta?</a>
     </form>
 </main>

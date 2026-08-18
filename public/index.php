@@ -14,18 +14,19 @@ require_once __DIR__ . '/../includes/app.php';
 $router = new Router();
 //Registering routes.
 $router->get('/testing', [TestingController::class, 'testing']);
-$router->get('/admin', [PropiedadController::class, 'index'], [AuthMiddleware::class]);
-$router->get('/propiedades/create', [PropiedadController::class, 'create']);
-$router->post('/propiedades/create', [PropiedadController::class, 'save']);
-$router->get('/propiedades/edit/{id}', [PropiedadController::class, 'edit']);
-$router->post('/propiedades/update/{id}', [PropiedadController::class, 'update']);
-$router->post('/propiedades/delete/{id}', [PropiedadController::class, 'delete']);
 
-$router->get('/vendedores/create', [VendedoresController::class, 'create']);
-$router->post('/vendedores/create', [VendedoresController::class, 'store']);
-$router->get('/vendedores/edit/{id}', [VendedoresController::class, 'edit']);
-$router->post('/vendedores/update/{id}', [VendedoresController::class, 'update']);
-$router->post('/vendedores/delete/{id}', [VendedoresController::class, 'delete']);
+$router->get('/admin', [PropiedadController::class, 'index'], [AuthMiddleware::class]);
+$router->get('/propiedades/create', [PropiedadController::class, 'create'], [AuthMiddleware::class]);
+$router->post('/propiedades/create', [PropiedadController::class, 'save'], [AuthMiddleware::class]);
+$router->get('/propiedades/edit/{id}', [PropiedadController::class, 'edit', [AuthMiddleware::class]]);
+$router->post('/propiedades/update/{id}', [PropiedadController::class, 'update', [AuthMiddleware::class]]);
+$router->post('/propiedades/delete/{id}', [PropiedadController::class, 'delete', [AuthMiddleware::class]]);
+
+$router->get('/vendedores/create', [VendedoresController::class, 'create'], [AuthMiddleware::class]);
+$router->post('/vendedores/create', [VendedoresController::class, 'store'], [AuthMiddleware::class]);
+$router->get('/vendedores/edit/{id}', [VendedoresController::class, 'edit', [AuthMiddleware::class]]);
+$router->post('/vendedores/update/{id}', [VendedoresController::class, 'update'], [AuthMiddleware::class]);
+$router->post('/vendedores/delete/{id}', [VendedoresController::class, 'delete'], [AuthMiddleware::class]);
 
 $router->get('/', [PublicController::class, 'index']);
 $router->get('/about', [PublicController::class, 'about']);

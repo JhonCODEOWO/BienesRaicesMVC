@@ -65,4 +65,8 @@ class Auth {
     public static function logout(){
         unset($_SESSION['__auth']);
     }
+
+    public static function authenticated(): bool {
+        return isset($_SESSION['___auth']);
+    }
 }

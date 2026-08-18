@@ -2,6 +2,7 @@
 
 namespace Routes;
 
+use Closure;
 use Core\JustArray\JustArray;
 use Error;
 use Routes\Request;
@@ -124,9 +125,10 @@ class Router {
                 "method" => $method,
                 "body" => $_POST,
             ], $_FILES);
-            /**TODO: CREATE BASE CALLBACK AND THEN ITERATE EACH MIDDLEWARE 
-             * EXECUTING ITS OWN NEXT FUNCTION BASED ON THE FIRS DECLARED*/
-            $this->execHandler($handler, $req);
+
+            $next = $this->buildMiddlewarePipeline($handler, $middlewares);
+
+            $next($req);
         }
     }
     
@@ -155,5 +157,39 @@ class Router {
             
             return call_user_func([$controller, $fn], $req);
         }
+    }
+    
+    /**
+     *  Builds a pipeline execution where every handle() middleware class method is executed.
+     *
+     * @param  callable | array $handler The main $handler action callback or array.
+     * @param  array $middlewares The list of every middleware registered for the `$handler` action to execute.
+     * @return Closure the closure reference to start the pipeline execution.
+     */
+    private function buildMiddlewarePipeline(callable | array $handler, array $middlewares): Closure{
+            /**
+             * Defines main callback function
+             */
+            $next = function(Request $req) use ($handler) {
+                return $this->execHandler($handler, $req);
+            };
+
+            /**
+             * Iterates each middleware classname and re-assign $next with a new function calling
+             * the main function handler of a middleware class.
+             */
+            foreach (array_reverse($middlewares) as $index => $middlewareClassName) {
+                if(!class_exists($middlewareClassName)) throw new Error("The middleware class $middlewareClassName doesn't exists and the request can't continue. If it exists then execute composer update.");
+
+                $middlewareInstance = new $middlewareClassName();
+
+                if (!method_exists($middlewareInstance, 'handle')) throw new Error("The main middleware handle function doesn't exists in $middlewareClassName define it before use it like middleware.");
+
+                $next = function(Request $req) use ($middlewareInstance, $next) {
+                    return $middlewareInstance->handle($req, $next);
+                };
+            }
+
+            return $next;
     }
 }
